@@ -1,36 +1,119 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SchoolOS — Frontend
 
-## Getting Started
+> **The operating system for schools.** A Next.js web application providing the school management interface for administrators, teachers, parents, and students.
 
-First, run the development server:
+SchoolOS Frontend is a **white-label, multi-tenant** UI. The school name, logo, and icon are dynamically loaded from the API — nothing is hardcoded.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 14 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS |
+| State | Zustand |
+| API Client | Axios |
+| Auth | JWT (Access + Refresh token rotation) |
+
+---
+
+## User Roles & Portals
+
+| Role | Access |
+|---|---|
+| **Platform Super Admin** | `/platform-admin` — manages all schools, subscriptions |
+| **School Super Admin** | Full school dashboard, settings, all modules |
+| **School Admin** | Admissions, students, attendance, academics |
+| **Teacher** | Attendance marking, marks entry, homework |
+| **Accountant** | Fee collection, invoices, receipts, financial reports |
+| **Receptionist** | Front office — visitors, calls, postal, enquiries |
+| **Librarian** | Book catalog, issue/return |
+| **Parent** | Child's attendance, marks, fees, homework |
+| **Student** | Own timetable, homework, results, study material |
+
+---
+
+## Getting Started (Local Development)
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+- SchoolOS Backend running at `http://localhost:3001`
+
+### Setup
+
+```bash
+# Clone the repo
+git clone https://github.com/cyberhive54/SchoolOS-frontend.git
+cd SchoolOS-frontend
+
+# Install dependencies
+npm install
+
+# Copy environment variables
+cp .env.example .env.local
+# Edit .env.local with your backend URL
+```
+
+### Environment Variables
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3001
+```
+
+### Run
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+App will be available at `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## White-Label Design
 
-## Learn More
+SchoolOS Frontend has **zero hardcoded school identity**. On load, the app fetches school settings from the API and dynamically applies:
 
-To learn more about Next.js, take a look at the following resources:
+- School name (shown in header, page titles, documents)
+- School logo (shown in sidebar, report cards, PDF receipts)
+- School icon / Favicon
+- Theme color (optional)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Schools configure all of this from their settings panel. When a new school is onboarded, they simply upload their logo and their branded portal is ready instantly.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Key Pages
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Route | Description |
+|---|---|
+| `/login` | School login (dynamic branding) |
+| `/dashboard` | Role-based dashboard |
+| `/students` | Student management |
+| `/attendance` | Daily attendance marking |
+| `/fees` | Fee collection & invoices |
+| `/academics` | Classes, subjects, timetables |
+| `/exams` | Exam scheduling, marks, report cards |
+| `/front-office` | Visitors, enquiries, calls |
+| `/staff` | Staff management |
+| `/communication` | Announcements, messages |
+| `/settings` | School configuration (name, logo, academic year, fee structure) |
+| `/platform-admin` | Platform super admin panel |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Related Repositories
+
+| Repo | Description |
+|---|---|
+| [SchoolOS-backend](https://github.com/cyberhive54/SchoolOS-backend) | NestJS API server |
+
+---
+
+## License
+
+Proprietary. All rights reserved.
