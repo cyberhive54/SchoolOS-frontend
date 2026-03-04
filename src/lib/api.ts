@@ -107,10 +107,18 @@ export const authApi = {
 
 export const studentsApi = {
     list: (params?: Record<string, unknown>) => api.get('/students', { params }),
-    get: (id: string) => api.get(`/students/${id}`),
+    get: (id: string, include?: string) => api.get(`/students/${id}`, { params: include ? { include } : undefined }),
     create: (data: unknown) => api.post('/students', data),
     update: (id: string, data: unknown) => api.patch(`/students/${id}`, data),
-    softDelete: (id: string) => api.delete(`/students/${id}`),
+    softDelete: (id: string, reason?: string) => api.delete(`/students/${id}`, { data: { reason } }),
+    // Parent links
+    addParent: (studentId: string, data: unknown) => api.post(`/students/${studentId}/parents`, data),
+    // Documents
+    getDocuments: (studentId: string) => api.get(`/students/${studentId}/documents`),
+    // Categories (BPL, SC/ST, OBC, etc.)
+    listCategories: () => api.get('/students/meta/categories'),
+    createCategory: (data: { name: string; description?: string; discount_percentage?: number }) =>
+        api.post('/students/meta/categories', data),
 };
 
 export const frontOfficeApi = {
