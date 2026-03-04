@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { CalendarCheck, ChevronLeft, ChevronRight, CheckCircle, XCircle, Clock, AlertCircle } from 'lucide-react';
 import { attendanceApi, academicsApi } from '@/lib/api';
-import { Header } from '@/components/layout/Header';
+
 import toast from 'react-hot-toast';
 import type { AttendanceStatus } from '@/types';
 import { format, addDays, subDays } from 'date-fns';
@@ -93,7 +93,7 @@ export default function AttendancePage() {
 
     return (
         <>
-            <Header title="Attendance" subtitle="Mark and track student attendance" />
+
 
             <div style={{ padding: '28px' }}>
                 {/* Controls */}

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ClipboardList, Search, Plus, CheckCircle, Phone, User, Loader2 } from 'lucide-react';
 import { frontOfficeApi } from '@/lib/api';
-import { Header } from '@/components/layout/Header';
+
 import toast from 'react-hot-toast';
 import type { AdmissionEnquiry, EnquiryStatus } from '@/types';
 import { format, parseISO } from 'date-fns';
@@ -34,7 +34,7 @@ export default function EnquiriesPage() {
 
     return (
         <>
-            <Header title="Admission Enquiries" subtitle="Track and manage prospective student enquiries" />
+
 
             <div style={{ padding: '28px' }}>
                 {/* Toolbar */}

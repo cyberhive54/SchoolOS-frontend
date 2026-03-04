@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { DollarSign, Search, Plus, CheckCircle, Clock, AlertTriangle } from 'lucide-react';
 import { feesApi } from '@/lib/api';
-import { Header } from '@/components/layout/Header';
+
 import type { FeeInvoice } from '@/types';
 import { format, parseISO } from 'date-fns';
 
@@ -35,7 +35,7 @@ export default function InvoicesPage() {
 
     return (
         <>
-            <Header title="Fee Invoices" subtitle="Manage student fee collection and payments" />
+
 
             <div style={{ padding: '28px' }}>
                 {/* Summary cards */}

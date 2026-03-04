@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { GraduationCap, Search, Plus, Filter, Download, ChevronDown, Eye, Edit, Trash2 } from 'lucide-react';
 import { studentsApi } from '@/lib/api';
-import { Header } from '@/components/layout/Header';
+
 import type { Student } from '@/types';
 import { format } from 'date-fns';
 
@@ -34,7 +34,7 @@ export default function StudentsPage() {
 
     return (
         <>
-            <Header title="Students" subtitle="Manage student records and enrollment" />
+
 
             <div style={{ padding: '28px' }}>
                 {/* Toolbar */}

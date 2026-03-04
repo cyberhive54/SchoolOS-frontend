@@ -1,13 +1,13 @@
 'use client';
 
 import React from 'react';
-import { Header } from '@/components/layout/Header';
+
 import { MessageSquare } from 'lucide-react';
 
 export default function CommunicationPage() {
     return (
         <>
-            <Header title="Communication" subtitle="SMS, Email and WhatsApp campaigns" />
+
             <div style={{ padding: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
                 <div style={{ textAlign: 'center', color: 'var(--color-text-muted)' }}>
                     <div style={{ display: 'inline-flex', padding: '20px', borderRadius: '50%', background: 'var(--color-bg-elevated)', marginBottom: '16px' }}>

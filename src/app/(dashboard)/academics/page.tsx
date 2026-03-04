@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { BookOpen, Plus, ChevronRight } from 'lucide-react';
 import { academicsApi } from '@/lib/api';
-import { Header } from '@/components/layout/Header';
+
 import type { AcademicYear, Class, Section, Subject } from '@/types';
 
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -38,7 +38,7 @@ export default function AcademicsPage() {
 
     return (
         <>
-            <Header title="Academics" subtitle="Classes, subjects, timetables and exams" />
+
 
             <div style={{ padding: '28px' }}>
                 {/* Tabs */}

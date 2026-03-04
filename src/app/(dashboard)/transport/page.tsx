@@ -1,13 +1,13 @@
 'use client';
 
 import React from 'react';
-import { Header } from '@/components/layout/Header';
+
 import { Bus, Wrench } from 'lucide-react';
 
 export default function TransportPage() {
     return (
         <>
-            <Header title="Transport" subtitle="Manage vehicles, routes and student commute" />
+
             <div style={{ padding: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
                 <div style={{ textAlign: 'center', color: 'var(--color-text-muted)' }}>
                     <div style={{ display: 'inline-flex', padding: '20px', borderRadius: '50%', background: 'var(--color-bg-elevated)', marginBottom: '16px' }}>

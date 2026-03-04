@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Users, Search, Plus, ExternalLink } from 'lucide-react';
 import { frontOfficeApi } from '@/lib/api';
-import { Header } from '@/components/layout/Header';
+
 import { format, parseISO } from 'date-fns';
 import type { VisitorLog } from '@/types';
 
@@ -21,7 +21,7 @@ export default function VisitorsPage() {
 
     return (
         <>
-            <Header title="Visitor Log" subtitle="Manage campus visitors and pass issuance" />
+
 
             <div style={{ padding: '28px' }}>
                 <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', flexWrap: 'wrap', alignItems: 'center' }}>
