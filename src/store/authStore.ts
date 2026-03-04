@@ -11,9 +11,11 @@ interface AuthState {
     accessToken: string | null;
     refreshToken: string | null;
     isAuthenticated: boolean;
+    hydrated: boolean;
     setAuth: (user: User, accessToken: string, refreshToken: string) => void;
     setAccessToken: (token: string) => void;
     clearAuth: () => void;
+    setHydrated: () => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -23,9 +25,11 @@ export const useAuthStore = create<AuthState>()(
             accessToken: null,
             refreshToken: null,
             isAuthenticated: false,
+            hydrated: false,
+
+            setHydrated: () => set({ hydrated: true }),
 
             setAuth: (user, accessToken, refreshToken) => {
-                // Also sync to localStorage for the Axios interceptor
                 if (typeof window !== 'undefined') {
                     localStorage.setItem('access_token', accessToken);
                     localStorage.setItem('refresh_token', refreshToken);
@@ -51,11 +55,21 @@ export const useAuthStore = create<AuthState>()(
         }),
         {
             name: 'schoolos-auth',
-            // Only persist non-sensitive metadata — tokens stay in localStorage
+            // Persist user, auth state, AND refresh token
             partialize: (state) => ({
                 user: state.user,
                 isAuthenticated: state.isAuthenticated,
+                refreshToken: state.refreshToken,
             }),
+            onRehydrateStorage: () => (state) => {
+                // Restore tokens from localStorage into Zustand memory
+                if (state && typeof window !== 'undefined') {
+                    const at = localStorage.getItem('access_token');
+                    if (at) state.accessToken = at;
+                    // Signal hydration is complete
+                    state.hydrated = true;
+                }
+            },
         },
     ),
 );

@@ -1,42 +1,47 @@
 @import "tailwindcss";
 
 /* ══════════════════════════════════════════════════════════════════════════════
-   SchoolOS Design System — CSS Variables
-   Theme: Deep Navy (#0F172A) + Teal (#0D9488)
-   Configurable: future theme switching replaces these variables
+   SchoolOS Design System — CSS Custom Properties
+   All brand colors are overridable via JS (themeStore.applyTheme)
+   so the school can fully white-label everything.
 ══════════════════════════════════════════════════════════════════════════════ */
 
 @layer base {
   :root {
-    /* Brand */
+    /* ── Brand (overridden by themeStore at runtime) ─────────────────────── */
     --color-brand: #0D9488;
-    --color-brand-light: #14B8A6;
     --color-brand-dark: #0F766E;
-    --color-brand-50: #F0FDFA;
-    --color-brand-100: #CCFBF1;
+    --color-brand-light: #14B8A6;
+    --color-brand-rgb: 13, 148, 136;
+    --color-accent: #6366F1;
 
-    /* Background layers */
+    /* ── Backgrounds ─────────────────────────────────────────────────────── */
     --color-bg-base: #0F172A;
     --color-bg-surface: #1E293B;
     --color-bg-elevated: #27374D;
-    --color-bg-overlay: rgba(15, 23, 42, 0.8);
+    --color-bg-overlay: rgba(15, 23, 42, 0.85);
 
-    /* Text */
+    /* ── Text ────────────────────────────────────────────────────────────── */
     --color-text-primary: #F1F5F9;
     --color-text-secondary: #94A3B8;
     --color-text-muted: #64748B;
     --color-text-inverse: #0F172A;
 
-    /* Border */
+    /* ── Border ──────────────────────────────────────────────────────────── */
     --color-border: #334155;
     --color-border-light: #1E293B;
 
-    /* Sidebar */
+    /* ── Sidebar (overridden by themeStore) ──────────────────────────────── */
+    --sidebar-bg: #1E293B;
+    --sidebar-border: #334155;
+    --sidebar-text: #94A3B8;
+    --sidebar-text-active: #F1F5F9;
+    --sidebar-item-active-bg: rgba(13, 148, 136, 0.15);
     --sidebar-width-expanded: 260px;
     --sidebar-width-collapsed: 68px;
     --sidebar-transition: 280ms cubic-bezier(0.4, 0, 0.2, 1);
 
-    /* Status colours */
+    /* ── Status ──────────────────────────────────────────────────────────── */
     --color-success: #10B981;
     --color-success-bg: rgba(16, 185, 129, 0.12);
     --color-warning: #F59E0B;
@@ -46,18 +51,29 @@
     --color-info: #3B82F6;
     --color-info-bg: rgba(59, 130, 246, 0.12);
 
-    /* Shadows */
-    --shadow-card: 0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3);
-    --shadow-dropdown: 0 10px 40px rgba(0,0,0,0.5);
+    /* ── Elevation / Shadow ──────────────────────────────────────────────── */
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-dropdown: 0 10px 40px rgba(0, 0, 0, 0.5);
+    --shadow-brand: 0 4px 20px rgba(var(--color-brand-rgb), 0.3);
 
-    /* Font */
+    /* ── Radius (overridden by themeStore) ───────────────────────────────── */
+    --border-radius: 8px;
+
+    /* ── Typography ──────────────────────────────────────────────────────── */
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
   }
 }
 
-/* ── Base reset ──────────────────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; }
+/* ── Google Font ─────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap');
+
+/* ── Base reset ──────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
 html {
   font-family: var(--font-sans);
@@ -73,13 +89,26 @@ body {
   background-color: var(--color-bg-base);
 }
 
-/* ── Scrollbar ─────────────────────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #475569; }
+/* ── Scrollbar ──────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
 
-/* ── Tailwind v4 custom tokens ───────────────────────────────────────────── */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* ── Tailwind v4 theme tokens ───────────────────────────────────────────── */
 @theme {
   --color-brand: #0D9488;
   --color-brand-light: #14B8A6;
@@ -88,44 +117,103 @@ body {
   --color-border-custom: #334155;
 }
 
-/* ── Animations ──────────────────────────────────────────────────────────── */
+/* ── Animations ─────────────────────────────────────────────────────────── */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(-12px); }
-  to   { opacity: 1; transform: translateX(0); }
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-@keyframes pulse-ring {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.05); }
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
-.animate-fadeIn { animation: fadeIn 0.3s ease both; }
-.animate-slideIn { animation: slideIn 0.25s ease both; }
+@keyframes pulse-dot {
 
-/* ── Skeleton loading ────────────────────────────────────────────────────── */
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.4);
+    opacity: 1;
+  }
+}
+
+@keyframes count-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease both;
+}
+
+.animate-slideIn {
+  animation: slideInLeft 0.25s ease both;
+}
+
+/* ── Skeleton shimmer ───────────────────────────────────────────────────── */
 .skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--color-bg-surface) 25%,
-    var(--color-bg-elevated) 50%,
-    var(--color-bg-surface) 75%
-  );
+  background: linear-gradient(90deg,
+      var(--color-bg-surface) 25%,
+      var(--color-bg-elevated) 50%,
+      var(--color-bg-surface) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: 6px;
 }
 
-/* ── Dashboard layout ────────────────────────────────────────────────────── */
+/* ── Spinner — uses brand color auto ───────────────────────────────────── */
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-brand);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+/* ── Dashboard layout ───────────────────────────────────────────────────── */
 .dashboard-layout {
   display: flex;
   min-height: 100vh;
@@ -136,8 +224,6 @@ body {
   top: 0;
   left: 0;
   height: 100vh;
-  background: var(--color-bg-surface);
-  border-right: 1px solid var(--color-border);
   width: var(--sidebar-width-expanded);
   transition: width var(--sidebar-transition);
   z-index: 40;
@@ -159,15 +245,11 @@ body {
   flex-direction: column;
 }
 
-.main-content.sidebar-collapsed {
-  margin-left: var(--sidebar-width-collapsed);
-}
-
 /* ── Cards ──────────────────────────────────────────────────────────────── */
 .card {
   background: var(--color-bg-surface);
   border: 1px solid var(--color-border);
-  border-radius: 12px;
+  border-radius: var(--border-radius);
   box-shadow: var(--shadow-card);
 }
 
@@ -177,7 +259,7 @@ body {
 
 .card-hover:hover {
   border-color: var(--color-brand);
-  box-shadow: 0 4px 20px rgba(13, 148, 136, 0.15);
+  box-shadow: 0 4px 24px rgba(var(--color-brand-rgb), 0.15);
   transform: translateY(-1px);
 }
 
@@ -185,11 +267,12 @@ body {
 .stat-card {
   background: var(--color-bg-surface);
   border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 24px;
+  border-radius: var(--border-radius);
+  padding: 20px 22px;
   position: relative;
   overflow: hidden;
   transition: all 0.2s;
+  animation: fadeIn 0.3s ease both;
 }
 
 .stat-card::before {
@@ -200,15 +283,16 @@ body {
   right: 0;
   height: 3px;
   background: var(--accent, var(--color-brand));
-  border-radius: 12px 12px 0 0;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
 }
 
 .stat-card:hover {
   border-color: var(--accent, var(--color-brand));
-  box-shadow: 0 4px 24px rgba(13, 148, 136, 0.12);
+  box-shadow: 0 4px 24px rgba(var(--color-brand-rgb), 0.12);
+  transform: translateY(-2px);
 }
 
-/* ── Table ──────────────────────────────────────────────────────────────── */
+/* ── Tables ─────────────────────────────────────────────────────────────── */
 .data-table {
   width: 100%;
   border-collapse: collapse;
@@ -243,7 +327,7 @@ body {
   border-bottom: none;
 }
 
-/* ── Badges / Status ─────────────────────────────────────────────────────── */
+/* ── Badges ─────────────────────────────────────────────────────────────── */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -255,19 +339,43 @@ body {
   letter-spacing: 0.02em;
 }
 
-.badge-success { background: var(--color-success-bg); color: var(--color-success); }
-.badge-warning { background: var(--color-warning-bg); color: var(--color-warning); }
-.badge-danger  { background: var(--color-danger-bg);  color: var(--color-danger); }
-.badge-info    { background: var(--color-info-bg);    color: var(--color-info); }
-.badge-default { background: rgba(100,116,139,0.15);  color: var(--color-text-secondary); }
+.badge-success {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
 
-/* ── Buttons ─────────────────────────────────────────────────────────────── */
+.badge-warning {
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+
+.badge-danger {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+.badge-info {
+  background: var(--color-info-bg);
+  color: var(--color-info);
+}
+
+.badge-brand {
+  background: rgba(var(--color-brand-rgb), 0.15);
+  color: var(--color-brand-light);
+}
+
+.badge-default {
+  background: rgba(100, 116, 139, 0.15);
+  color: var(--color-text-secondary);
+}
+
+/* ── Buttons — all use --color-brand ────────────────────────────────────── */
 .btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 9px 18px;
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   font-weight: 600;
   font-size: 0.875rem;
   cursor: pointer;
@@ -277,45 +385,75 @@ body {
   outline: none;
 }
 
-.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 .btn-primary {
   background: var(--color-brand);
   color: white;
   border-color: var(--color-brand);
 }
-.btn-primary:hover:not(:disabled) { background: var(--color-brand-dark); }
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--color-brand-dark);
+  box-shadow: var(--shadow-brand);
+}
 
 .btn-secondary {
   background: transparent;
   color: var(--color-text-primary);
   border-color: var(--color-border);
 }
-.btn-secondary:hover:not(:disabled) { background: var(--color-bg-elevated); }
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--color-bg-elevated);
+  border-color: var(--color-brand);
+}
 
 .btn-ghost {
   background: transparent;
   color: var(--color-text-secondary);
   border-color: transparent;
 }
-.btn-ghost:hover:not(:disabled) { background: var(--color-bg-elevated); color: var(--color-text-primary); }
+
+.btn-ghost:hover:not(:disabled) {
+  background: var(--color-bg-elevated);
+  color: var(--color-text-primary);
+}
 
 .btn-danger {
   background: var(--color-danger-bg);
   color: var(--color-danger);
   border-color: rgba(239, 68, 68, 0.3);
 }
-.btn-danger:hover:not(:disabled) { background: rgba(239, 68, 68, 0.2); }
 
-.btn-sm { padding: 6px 12px; font-size: 0.8125rem; }
-.btn-lg { padding: 12px 24px; font-size: 1rem; }
+.btn-danger:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.2);
+}
 
-/* ── Form inputs ─────────────────────────────────────────────────────────── */
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 0.8125rem;
+}
+
+.btn-lg {
+  padding: 12px 24px;
+  font-size: 1rem;
+}
+
+.btn-icon {
+  padding: 8px;
+  gap: 0;
+}
+
+/* ── Form inputs ────────────────────────────────────────────────────────── */
 .form-input {
   width: 100%;
   background: var(--color-bg-elevated);
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   padding: 10px 14px;
   color: var(--color-text-primary);
   font-size: 0.875rem;
@@ -323,11 +461,13 @@ body {
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.form-input::placeholder { color: var(--color-text-muted); }
+.form-input::placeholder {
+  color: var(--color-text-muted);
+}
 
 .form-input:focus {
   border-color: var(--color-brand);
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+  box-shadow: 0 0 0 3px rgba(var(--color-brand-rgb), 0.15);
 }
 
 .form-label {
@@ -339,11 +479,23 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* ── Modal ───────────────────────────────────────────────────────────────── */
+.form-hint {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
+.form-error {
+  font-size: 0.75rem;
+  color: var(--color-danger);
+  margin-top: 4px;
+}
+
+/* ── Modal ──────────────────────────────────────────────────────────────── */
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
   z-index: 50;
   display: flex;
@@ -363,7 +515,7 @@ body {
   animation: fadeIn 0.2s ease;
 }
 
-/* ── Page header ─────────────────────────────────────────────────────────── */
+/* ── Page header ────────────────────────────────────────────────────────── */
 .page-header {
   padding: 24px 28px 0;
 }
@@ -381,7 +533,7 @@ body {
   margin-top: 4px;
 }
 
-/* ── Sidebar tooltip (when collapsed) ────────────────────────────────────── */
+/* ── Sidebar tooltip ────────────────────────────────────────────────────── */
 .sidebar-tooltip {
   position: absolute;
   left: calc(var(--sidebar-width-collapsed) + 8px);
@@ -406,12 +558,95 @@ body {
   transform: translateX(0);
 }
 
-/* ── Responsive ──────────────────────────────────────────────────────────── */
-@media (max-width: 768px) {
+/* ── Quick stat progress ring ───────────────────────────────────────────── */
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+/* ── Divider ────────────────────────────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 16px 0;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+
+  /* Sidebar becomes an overlay on mobile */
   .sidebar-nav {
-    width: var(--sidebar-width-collapsed) !important;
+    transform: translateX(-100%);
+    transition: transform var(--sidebar-transition), width var(--sidebar-transition);
+    width: var(--sidebar-width-expanded) !important;
+    box-shadow: var(--shadow-dropdown);
   }
+
+  .sidebar-nav.mobile-open {
+    transform: translateX(0);
+  }
+
   .main-content {
-    margin-left: var(--sidebar-width-collapsed) !important;
+    margin-left: 0 !important;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: flex !important;
+  }
+
+  .header-profile-name {
+    display: none;
+  }
+}
+
+@media (min-width: 1025px) {
+  .mobile-only {
+    display: none !important;
+  }
+
+  .desktop-only {
+    display: flex !important;
+  }
+}
+
+/* ── Dashboard grid layouts ─────────────────────────────────────────────── */
+.dash-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.dash-mid-grid {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 16px;
+}
+
+.dash-bottom-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 1200px) {
+  .dash-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dash-mid-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dash-bottom-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .dash-stats-grid {
+    grid-template-columns: 1fr;
   }
 }
