@@ -58,13 +58,42 @@ export interface Student {
     date_of_birth: string;
     gender: string | null;
     blood_group: string | null;
+    nationality: string | null;
+    religion: string | null;
+    mother_tongue: string | null;
+    profile_photo_url: string | null;
     status: 'active' | 'inactive' | 'transferred' | 'withdrawn' | 'alumni';
-    admission_date: string;
+    admission_date: string | null;
     category_id: string | null;
+    house_id: string | null;
+    notes: string | null;
     current_address: Record<string, unknown>;
+    permanent_address: Record<string, unknown>;
     emergency_contact: Record<string, unknown>;
+    medical_info: Record<string, unknown>;
+    // Included when fetching detail with ?include=parents
+    parents?: Array<{
+        id: string;
+        first_name: string;
+        last_name: string | null;
+        phone: string | null;
+        email: string | null;
+        relation: string;
+        is_primary: boolean;
+        can_pickup: boolean;
+    }>;
+    // Included when fetching detail with ?include=documents
+    documents?: Array<{
+        id: string;
+        document_type: string;
+        title: string | null;
+        file_url: string;
+        created_at: string;
+    }>;
     created_at: string;
+    updated_at: string;
 }
+
 
 export interface StudentParentLink {
     id: string;
